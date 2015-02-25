@@ -1,11 +1,12 @@
-rundir specification
-====================
+rundir Runnable Directory Specification
+=======================================
 
-An application directory <https://en.wikipedia.org/wiki/Application_directory>
+A [runnable directory](https://en.wikipedia.org/wiki/Application_directory)
 mechanism that also optionally allows for creating self-running archives of
-application directories.
+runnable directories.
 
 
+Version 0.0.1, 2015-02-24  
 Copyright (c) 2014–2015 Scott Zeid <s@zeid.me>.
 
 This specification and its reference implementation are released under [the X11
