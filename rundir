@@ -2,107 +2,22 @@
 # vim: set fdm=marker:
 
 # rundir
-# ======
 # 
 # An application directory <https://en.wikipedia.org/wiki/Application_directory>
 # implementation that also allows for creating self-running archives of
 # application directories.
 # 
-# Copyright (c) 2014 Scott Zeid <s@zeid.me>.
+# Copyright (c) 2014-2015 Scott Zeid <s@zeid.me>.
+# http://code.s.zeid.me/rundir
+# 
 # Released under the X11 License:  <https://tldrlegal.com/license/x11-license>
 # 
-# Application directory structure:
 # 
-# - app-dir/
-#     - `bin/` - (optional) this is prepended to the executable's $PATH
-#     - `<the actual executable; see below for valid filenames>`
-#     - `<anything else you want to include>`
+# See <http://code.s.zeid.me/rundir/src/master/SPEC.md> for information about
+# the runnable directory mechanism implemented by this program.
 # 
-# The file to be run will be the first one of the following, in the order
-# listed, that is found to exist:
-# 
-# - `run`
-# - `run.mk`
-# - `AppRun` (for ROX compatibility) ($PATH will not be modified)
-# 
-# Makefile runfiles will be executed in the application directory; the other
-# ones will be run in the original working directory.
-# 
-# The `.mk` variants will be treated as makefiles, with the default target
-# being `default` instead of `all` (only the first argument is looked at for
-# a target name).  Make will also be passed the `-B` (`--always-make`) option.
-# 
-# Unless otherwise noted, `<application-directory>/bin`, if it exists, will be
-# prepended to the $PATH passed to the script/makefile.
-# 
-# Only the non-makefile variants need to have their executable bits set, and
-# only one variant needs to exist.  If multiple variants exist, only the first
-# one in the order listed above will be run.
-# 
-# Except for determining the make target name for makefile runfiles, arguments
-# are not treated specially.
-# 
-# `rundir` will fail if the executable file or makefile's owner is not the
-# same as the directory's owner, or (if it is a directory) `<dir>/bin`'s
-# owner is not the same as the directory's owner.  This prevents attacks
-# such as dropping a `run.mk` file in `/tmp` and then tricking a system
-# administrator to run `rundir /tmp` as root (e.g. by making a symlink to
-# `/tmp` with an innocuous-looking name), or tricking any user to run
-# `/tmp` in a file browser that supports using rundir to run runnable
-# directories.  In this example, `/tmp` is an arbitrary, but world-writable,
-# directory.  (When checking the owners of symlinks, rundir looks at the
-# owners of the symlinks themselves, not those of their targets.)
-# 
-# 
-# Self-extracting archives
-# ------------------------
-# 
-# This is also capable of producing self-extracting archives.  The default
-# behavior of these archives is to extract them to a temporary directory,
-# run their contents, and then delete the temporary directory.  They accept
-# a few environment variables that will cancel the default behavior:
-# 
-# - `RUNDIR_SFX_EXTRACT=<dirname>`:  extract to `<directory>`
-# - `RUNDIR_SFX_LIST=1|true`:  list the archive's contents
-# - `RUNDIR_SFX_CAT=1|true`:  dump the archive to stdout
-# - `RUNDIR_SFX_HELP=1|true`:  print this usage message
-# - `RUNDIR_SFX_USAGE=1|true`:  print this usage message
-# 
-# and one that doesn't:
-# 
-# - `RUNDIR_SFX_TMP=<directory>`:  use `<directory>` instead of `/tmp`
-# 
-# The SFX archives are shell scripts with a GZIP-compressed TAR archive
-# appended after a marker line (`__ARCHIVE_FOLLOWS_IF_SFX__`).
-# 
-# 
-# Usage
-# -----
-# 
-# Run `rundir --help` for command-line usage information that should now be
-# self-explanatory.
-# 
-# 
-# Portability
-# -----------
-# 
-# This script is intended to be as portable between \*nix systems as possible.
-# Therefore, an effort has been made to only use POSIX-defined commands,
-# POSIX-defined arguments to those commands, and POSIX-defined shell features.
-# The only exception is `tar`, but that is only used in the self-extracting
-# archive code.
-# 
-# Contributions to this script are welcome if and only if they meet those
-# criteria.
-# 
-# Also, this is written as a shell script and not in C/C++ because it is
-# intended to be portable across processor architectures *without* the need
-# to compile code.
-# 
-# Although this script is written to be portable, the same, however, is not
-# necessarily true for runnable directories themselves, obviously.  Authors
-# of runnable directories should take care to account for differences between
-# \*nix systems and processor architectures.
+# See <http://code.s.zeid.me/rundir/src/master/README.md> for information about
+# this program.
 
 
 #### Plumbing
