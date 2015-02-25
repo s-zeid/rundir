@@ -7,7 +7,7 @@ runnable directories.
 
 
 Version 0.0.1, 2015-02-24  
-Copyright (c) 2014–2015 Scott Zeid <s@zeid.me>.
+Copyright (c) 2014–2015 Scott Zeid.
 
 This specification and its reference implementation are released under [the X11
 License](https://tldrlegal.com/license/x11-license), but code samples in this
