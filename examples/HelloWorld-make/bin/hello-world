@@ -1,0 +1,12 @@
+#!/bin/sh
+
+bin=`dirname "$0"`
+dir=`dirname "$bin"`
+
+printf 'dir: %s\n' "$dir"  >&2
+printf 'pwd: %s\n' "`pwd`" >&2
+
+echo "Hello" "$@"
+
+echo "Press ENTER to exit..." >&2
+read
