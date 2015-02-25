@@ -1,11 +1,11 @@
 rundir
 ======
 
-An [application directory](https://en.wikipedia.org/wiki/Application_directory)
+A [runnable directory](https://en.wikipedia.org/wiki/Application_directory)
 implementation that also allows for creating self-running archives of
-application directories.
+runnable directories.
 
-Copyright (c) 2014–2015 Scott Zeid <s@zeid.me>.
+Copyright (c) 2014–2015 Scott Zeid <s@zeid.me>.  
 http://code.s.zeid.me/rundir
 
 Released under the X11 License:  <https://tldrlegal.com/license/x11-license>
