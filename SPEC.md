@@ -333,7 +333,7 @@ by the environment or otherwise not applicable:
 All of these variables or their equivalent actions MUST cancel the
 usual behavior EXCEPT for `RUNDIR_SFX_TMP`.
 
-The SFX archives MUST BE shell scripts that conform to the following:
+The SFX archives MUST be shell scripts that conform to the following:
 
 * They MUST have the shebang line `#!/bin/sh` with no extra arguments or
   trailing whitespace.
