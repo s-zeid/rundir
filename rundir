@@ -299,9 +299,10 @@ sfx_entry() {
  # Determine where to put the temporary directory
  local tmp="/tmp"
  if [ -n "$RUNDIR_SFX_TMP" ]; then
+  local orig_wd=$(pwd)
   cd "$RUNDIR_SFX_TMP"
   tmp=$(pwd)
-  cd "$OLDPWD"
+  cd "$orig_wd"
  fi
  
  # Extract temporary files
