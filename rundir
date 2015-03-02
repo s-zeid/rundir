@@ -101,6 +101,15 @@ run_dir() {
  local dir=$1
  shift
  
+ if [ ! -e "$dir" ]; then
+  echo "$SCRIPT: error: $dir does not exist" >&2
+  return 127
+ fi
+ if [ ! -d "$dir" ]; then
+  echo "$SCRIPT: error: $dir is not a directory" >&2
+  return 127
+ fi
+ 
  local dir_name=$dir
  
  local dir_uid=$(get_uid "$dir")
