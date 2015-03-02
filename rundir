@@ -375,13 +375,13 @@ get_uid() {
  local uid=$(ls -d -n "$file" | sed -e "s/\t/ /g" | cut -d ' ' -f 3)
  
  # The UID should be an integer; otherwise, we've failed
- echo "x$uid" | grep -v '^x[0-9][0-9]*$' &>/dev/null
- if [ $? -eq 0 ]; then
+ echo "x$uid" | (grep '^x[0-9][0-9]*$' &>/dev/null)
+ if [ $? -ne 0 ]; then
   echo "$SCRIPT:get_uid: could not determine the owner's UID for $file" >&2
   return 127
  fi
  
- echo "$uid"
+ printf '%s' "$uid"
 }
 
 #}}}
