@@ -122,6 +122,7 @@ run_dir() {
   return 127
  fi
  
+ local orig_wd=$(pwd)
  cd "$dir"
  if [ $? -ne 0 ]; then
   echo "$0: error: could not enter $dir" >&2
@@ -178,7 +179,7 @@ run_dir() {
  fi
  
  if [ -z "$wd" ]; then
-  cd "$OLDPWD"
+  cd "$orig_wd"
  fi
  
  if [ $use_make -eq 0 ]; then
@@ -206,9 +207,6 @@ is_runnable_dir() {
  local dir=$1
  shift
  
- #cd "$dir" &>/dev/null
- #[ $? -ne 0 ] && return 1
- #cd "$OLDPWD"
  [ ! -d "$dir" ] && return 1
  [ -x "$dir/run" ] && return 0
  [ -f "$dir/run.mk" ] && return 0
