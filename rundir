@@ -360,7 +360,7 @@ get_uid() {
  # Try to ensure `ls` will succeed
  ls -d -n "$file" >/dev/null
  if [ $? -ne 0 ]; then
-  echo "$SCRIPT:get_uid: could not get information for $file" &>2
+  echo "$SCRIPT:get_uid: could not get information for $file" >&2
   return 127
  fi
  
