@@ -225,6 +225,11 @@ is_runnable_dir() {
 }
 
 resolve_path() {
+ # handle the case where the last path component is empty
+ if [ x"$1" = x"" ] || (printf '%s' "$1" | grep -q -e '/$'); then
+  return 1
+ fi
+ 
  local dir=$(basename "/$1")
  shift
  
