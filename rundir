@@ -201,7 +201,7 @@ run_in_path() {
  if [ -n "$resolved" ]; then
   run_dir "$resolved" "$@"
  else
-  echo "$SCRIPT: no runnable $dir in $PATH" >&2
+  echo "$SCRIPT: no runnable $dir in ($PATH)" >&2
   return 127
  fi
 }
