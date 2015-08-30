@@ -198,6 +198,21 @@ run_dir() {
  fi
 }
 
+run_in_path() {
+ local dir=$1
+ shift
+ 
+ local resolved=$(resolve_path "$dir")
+ if [ -n "$resolved" ]; then
+  run_dir "$resolved" "$@"
+ else
+  echo "$SCRIPT: no runnable $dir in $PATH" >&2
+  return 127
+ fi
+}
+
+# Runnable directory logic {{{1
+
 is_runnable_dir() {
  if [ -z "$1" ]; then
   echo "$SCRIPT:is_runnable_dir: first argument must be the directory" >&2
@@ -212,19 +227,6 @@ is_runnable_dir() {
  [ -f "$dir/run.mk" ] && return 0
  [ -x "$dir/AppRun" ] && return 0
  return 1
-}
-
-run_in_path() {
- local dir=$1
- shift
- 
- local resolved=$(resolve_path "$dir")
- if [ -n "$resolved" ]; then
-  run_dir "$resolved" "$@"
- else
-  echo "$SCRIPT: no runnable $dir in $PATH" >&2
-  return 127
- fi
 }
 
 resolve_path() {
