@@ -68,12 +68,12 @@ default() {
 # Usage {{{1
 
 usage() {
- if [ $IS_SFX -eq 1 ]; then
-  DIR_ARG=''
+ if [ $IS_SFX -eq 0 ]; then
+  echo "Usage: $SCRIPT <directory> [args [...]]"
+  echo "       $SCRIPT -p|--search-path <directory-in-path> [args [...]]"
+  echo "       $SCRIPT --make-sfx <directory> <output-file>"
+  echo "       $SCRIPT -h|--help"
  else
-  DIR_ARG='<directory> '
- fi
- if [ $IS_SFX -eq 1 ]; then
   echo "Usage: $SCRIPT [args [...]]"
   echo "The default behavior is to extract this archive to a temporary directory,"
   echo "run its contents, and then delete the temporary directory."
@@ -87,11 +87,6 @@ usage() {
   echo "  RUNDIR_SFX_USAGE=1|true:  print this usage message"
   echo " ... that don't cancel the default behavior:"
   echo "  RUNDIR_SFX_TMP=<directory>:  use <directory> instead of /tmp"
- else
-  echo "Usage: $SCRIPT <directory> [args [...]]"
-  echo "       $SCRIPT -p|--search-path <directory-in-path> [args [...]]"
-  echo "       $SCRIPT --make-sfx <directory> <output-file>"
-  echo "       $SCRIPT -h|--help"
  fi
 }
 
