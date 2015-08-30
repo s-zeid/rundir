@@ -225,7 +225,7 @@ is_runnable_dir() {
 }
 
 resolve_path() {
- local dir=$(basename "$1")
+ local dir=$(basename "/$1")
  shift
  
  #local search=$PATH:
@@ -255,7 +255,7 @@ make_sfx() {
  fi
  
  local in_dir=$1
- local in_name=$(basename "$in_dir")
+ local in_name=$(basename "/$in_dir")
  local out_file=$2
  
  if [ ! -d "$in_dir" ]; then
