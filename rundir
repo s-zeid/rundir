@@ -239,6 +239,7 @@ resolve_path() {
  # local search=${search#*:}
  local oldifs=$IFS
  IFS=:
+ local i
  for i in $PATH; do
   if is_runnable_dir "$i/$dir"; then
    echo "$i/$dir"
