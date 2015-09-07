@@ -201,6 +201,11 @@ run_in_path() {
  local dir=$1
  shift
  
+ if [ x"$dir" = x"" ]; then
+  echo "Usage: $SCRIPT -p|--search-path <directory-in-path> [args [...]]" >&2
+  return 127
+ fi
+ 
  local resolved=$(resolve_path "$dir")
  if [ -n "$resolved" ]; then
   run_dir "$resolved" "$@"
