@@ -322,7 +322,7 @@ resolve_path() {
 
 make_sfx() {
  if [ -z "$1" -o -z "$2" ]; then
-  echo "Usage: $SCRIPT --$0 <directory> <output-file>"
+  echo "Usage: $SCRIPT --make-sfx <directory> <output-file>"
   return 2
  fi
  
