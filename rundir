@@ -177,12 +177,11 @@ run_dir() {
   fi
  fi
  
- if [ -z "$wd" ]; then
-  cd "$orig_wd"
- fi
+ cd "$orig_wd"
  
  if [ $use_make -eq 0 ]; then
-  PATH=$path "$run" "$@"
+  ([ -n "$wd" ] && cd "$wd" || true;
+   export PATH="$path"; exec "$run" "$@")
  else
   local target=
   if [ -n "$1" \
@@ -193,7 +192,8 @@ run_dir() {
   else
    target=default
   fi
-  PATH=$path make -B -f "$run" "$target" "$@"
+  ([ -n "$wd" ] && cd "$wd" || true;
+   export PATH="$path"; exec make -B -f "$run" "$target" "$@")
  fi
 }
 

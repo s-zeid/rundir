@@ -1,7 +1,7 @@
 text = 
 
 default:
-	hello ${text}
+	hello "$$PPID" ${text}
 
 world:
-	hello "world"
+	hello "$$PPID" "world"

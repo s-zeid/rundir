@@ -3,8 +3,21 @@
 bin=`dirname "$0"`
 dir=`dirname "$bin"`
 
-printf 'dir: %s\n' "$dir"  >&2
-printf 'pwd: %s\n' "`pwd`" >&2
+ppid=
+if [ $# -ge 1 ]; then
+ ppid=$1
+ shift
+fi
+
+printf  '                      dir: %s\n' "$dir"  >&2
+printf  '                      pwd: %s\n' "`pwd`" >&2
+
+if [ -d /proc ]; then
+ gppid=`cat "/proc/$ppid/status" | grep '^PPid:' | grep -o '[0-9][0-9]\+'`
+ printf '%s: %s\n' "grandparent process's pwd" "$(realpath "/proc/$gppid/cwd")" >&2
+else
+ printf '%s: %s\n' "grandparent process's pwd" "<not available>" >&2
+fi
 
 echo "Hello" "$@"
 

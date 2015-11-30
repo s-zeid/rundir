@@ -6,7 +6,7 @@ mechanism that also optionally allows for creating self-running archives of
 runnable directories.
 
 
-Version 0.0.1, 2015-02-24  
+Version 0.0.2, 2015-11-30  
 Copyright (c) 2014–2015 Scott Zeid.
 
 This specification and its reference implementation are released under [the X11
@@ -182,6 +182,10 @@ The runfile SHALL be run with the following stipulations:
 * For all runfiles other than makefiles, the runnable directory
   implementation MUST NOT change the working directory for any reason
   whatsoever.
+
+* When changing working directories, the runnable directory implementation
+  MUST NOT change its own working directory unless it is not possible to
+  change the working directory for the runfile's process separately.
 
 * Command-line arguments not consumed by the runnable directory
   implementation MUST be passed as-is to the runfile, except:
