@@ -9,7 +9,8 @@ Installation
 ------------
 
 1.  Copy `rundir.desktop` and `rundir_konsole.desktop` to
-    `~/.kde/share/kde4/services/ServiceMenus`,
+    `~/.local/share/kservices5/ServiceMenus` (for KDE 5) or
+    `~/.kde/share/kde4/services/ServiceMenus` (for KDE 4),
     creating that directory if it does not exist.
 
 2.  If necessary, ensure that the menu items are enabled
