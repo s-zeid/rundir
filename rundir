@@ -25,7 +25,7 @@
 SCRIPT=$0
 IS_SFX=0
 
-if [ $IS_SFX -eq 0 -a "$1" = "--" ]; then
+if [ $IS_SFX -eq 0 ] && [ "$1" = "--" ]; then
  shift
  DASH_DASH=1
 else
@@ -35,17 +35,17 @@ fi
 # Entry point (when IS_SFX=0) {{{1
 
 main() {
- if [ $DASH_DASH -eq 0 -a $IS_SFX -eq 0 ]; then
-  if [ "$1" = "--search-path" -o "$1" = "-p" ]; then
+ if [ $DASH_DASH -eq 0 ] && [ $IS_SFX -eq 0 ]; then
+  if [ "$1" = "--search-path" ] || [ "$1" = "-p" ]; then
    shift
    run_in_path "$@"
-  elif [ "$1" = "--which" -o "$1" = "-w" ]; then
+  elif [ "$1" = "--which" ] || [ "$1" = "-w" ]; then
    shift
    which_dir "$@"
   elif [ "$1" = "--make-sfx" ]; then
    shift
    make_sfx "$@"
-  elif [ "$1" = "--help" -o "$1" = "-h" ]; then
+  elif [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
    shift
    usage "$@"
   else
@@ -162,7 +162,7 @@ run_dir() {
  fi
  
  bin="$(pwd)/bin"
- if [ $add_path -ne 0 -a -d "$bin" ]; then
+ if [ $add_path -ne 0 ] && [ -d "$bin" ]; then
   # $bin's owner must match that of $dir for security reasons
   bin_uid=$(get_uid "$bin")
   if [ -z "$bin_uid" ]; then
@@ -184,9 +184,9 @@ run_dir() {
    export PATH="$path"; exec "$run" "$@")
  else
   local target=
-  if [ -n "$1" \
-       -a -n "$(printf '%s' "$1" | grep -v -e '^-')" \
-       -a -n "$(printf '%s' "$1" | grep -v -e '=')" ]; then
+  if [ -n "$1" ] && \
+     [ -n "$(printf '%s' "$1" | grep -v -e '^-')" ] && \
+     [ -n "$(printf '%s' "$1" | grep -v -e '=')" ]; then
    target=$1
    shift
   else
@@ -321,7 +321,7 @@ resolve_path() {
 # SFX stuffs {{{1
 
 make_sfx() {
- if [ -z "$1" -o -z "$2" ]; then
+ if [ -z "$1" ] || [ -z "$2" ]; then
   echo "Usage: $SCRIPT --make-sfx <directory> <output-file>"
   return 2
  fi
@@ -354,14 +354,14 @@ sfx_entry() {
  if [ -n "$RUNDIR_SFX_EXTRACT" ]; then
   sfx_extract "$skip" "$RUNDIR_SFX_EXTRACT"
   return $?
- elif [ "$RUNDIR_SFX_LIST" = "1" -o "$RUNDIR_SFX_LIST" = "true" ]; then
+ elif [ "$RUNDIR_SFX_LIST" = "1" ] || [ "$RUNDIR_SFX_LIST" = "true" ]; then
   sfx_cat "$skip" | tar tz
   return $?
- elif [ "$RUNDIR_SFX_CAT" = "1" -o "$RUNDIR_SFX_CAT" = "true" ]; then
+ elif [ "$RUNDIR_SFX_CAT" = "1" ] || [ "$RUNDIR_SFX_CAT" = "true" ]; then
   sfx_cat "$skip"
   return $?
- elif [ "$RUNDIR_SFX_HELP"  = "1" -o "$RUNDIR_SFX_HELP" = "true" -o \
-        "$RUNDIR_SFX_USAGE" = "1" -o "$RUNDIR_SFX_USAGE" = "true" ]; then
+ elif [ "$RUNDIR_SFX_HELP"  = "1" ] || [ "$RUNDIR_SFX_HELP" = "true" ] || \
+      [ "$RUNDIR_SFX_USAGE" = "1" ] || [ "$RUNDIR_SFX_USAGE" = "true" ]; then
   usage "$@"
   return $?
  fi
