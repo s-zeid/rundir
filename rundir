@@ -25,7 +25,7 @@
 SCRIPT=$0
 IS_SFX=0
 
-if [ $IS_SFX -eq 0 ] && [ "$1" = "--" ]; then
+if [ $IS_SFX -eq 0 ] && [ x"$1" = x"--" ]; then
  shift
  DASH_DASH=1
 else
@@ -36,16 +36,16 @@ fi
 
 main() {
  if [ $DASH_DASH -eq 0 ] && [ $IS_SFX -eq 0 ]; then
-  if [ "$1" = "--search-path" ] || [ "$1" = "-p" ]; then
+  if [ x"$1" = x"--search-path" ] || [ x"$1" = x"-p" ]; then
    shift
    run_in_path "$@"
-  elif [ "$1" = "--which" ] || [ "$1" = "-w" ]; then
+  elif [ x"$1" = x"--which" ] || [ x"$1" = x"-w" ]; then
    shift
    which_dir "$@"
-  elif [ "$1" = "--make-sfx" ]; then
+  elif [ x"$1" = x"--make-sfx" ]; then
    shift
    make_sfx "$@"
-  elif [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+  elif [ x"$1" = x"--help" ] || [ x"$1" = x"-h" ]; then
    shift
    usage "$@"
   else
@@ -354,14 +354,14 @@ sfx_entry() {
  if [ -n "$RUNDIR_SFX_EXTRACT" ]; then
   sfx_extract "$skip" "$RUNDIR_SFX_EXTRACT"
   return $?
- elif [ "$RUNDIR_SFX_LIST" = "1" ] || [ "$RUNDIR_SFX_LIST" = "true" ]; then
+ elif [ x"$RUNDIR_SFX_LIST"  = x"1" ] || [ x"$RUNDIR_SFX_LIST"  = x"true" ]; then
   sfx_cat "$skip" | tar tz
   return $?
- elif [ "$RUNDIR_SFX_CAT" = "1" ] || [ "$RUNDIR_SFX_CAT" = "true" ]; then
+ elif [ x"$RUNDIR_SFX_CAT"   = x"1" ] || [ x"$RUNDIR_SFX_CAT"   = x"true" ]; then
   sfx_cat "$skip"
   return $?
- elif [ "$RUNDIR_SFX_HELP"  = "1" ] || [ "$RUNDIR_SFX_HELP" = "true" ] || \
-      [ "$RUNDIR_SFX_USAGE" = "1" ] || [ "$RUNDIR_SFX_USAGE" = "true" ]; then
+ elif [ x"$RUNDIR_SFX_HELP"  = x"1" ] || [ x"$RUNDIR_SFX_HELP"  = x"true" ] || \
+      [ x"$RUNDIR_SFX_USAGE" = x"1" ] || [ x"$RUNDIR_SFX_USAGE" = x"true" ]; then
   usage "$@"
   return $?
  fi
