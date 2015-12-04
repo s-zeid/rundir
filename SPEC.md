@@ -33,6 +33,7 @@ specification.
 A reference implementation, written in portable \*nix shell, of this
 specification is available at
   <https://code.s.zeid.me/rundir>,
+  <https://gitlab.com/scottywz/rundir>,
   <https://bitbucket.org/scottywz/rundir>,
 and
   <https://github.com/scottywz/rundir>.
