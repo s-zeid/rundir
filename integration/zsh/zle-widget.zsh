@@ -15,7 +15,7 @@
 # will show the actual rundir command used to run the directory.
 # 
 # Copyright (c) 2015 Scott Zeid.
-# http://code.s.zeid.me/rundir
+# https://code.s.zeid.me/rundir
 # 
 # Released under the X11 License:  <https://tldrlegal.com/license/x11-license>
 

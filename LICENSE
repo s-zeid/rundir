@@ -4,7 +4,7 @@ implementation that also allows for creating self-running archives of
 application directories.
 
 Copyright (C) 2014-2015 Scott Zeid
-http://code.s.zeid.me/rundir
+https://code.s.zeid.me/rundir
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

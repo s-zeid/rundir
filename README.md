@@ -5,8 +5,8 @@ A [runnable directory](https://en.wikipedia.org/wiki/Application_directory)
 implementation that also allows for creating self-running archives of
 runnable directories.
 
-Copyright (c) 2014–2015 Scott Zeid.  
-http://code.s.zeid.me/rundir
+Copyright (c) 2014–2015 [Scott Zeid](https://s.zeid.me/).  
+<https://code.s.zeid.me/rundir>
 
 Released under the X11 License:  <https://tldrlegal.com/license/x11-license>
 
@@ -17,7 +17,7 @@ Specification
 This program's behavior is documented in [SPEC.md][spec-md].  It does implement
 the optional self-extracting archive protocol.
 
-[spec-md]: http://code.s.zeid.me/rundir/src/master/SPEC.md
+[spec-md]: https://code.s.zeid.me/rundir/src/master/SPEC.md
 
 
 Usage

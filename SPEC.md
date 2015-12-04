@@ -32,7 +32,7 @@ specification.
 
 A reference implementation, written in portable \*nix shell, of this
 specification is available at
-  <http://code.s.zeid.me/rundir>,
+  <https://code.s.zeid.me/rundir>,
   <https://bitbucket.org/scottywz/rundir>,
 and
   <https://github.com/scottywz/rundir>.
