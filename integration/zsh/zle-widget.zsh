@@ -38,7 +38,7 @@ function rundir_process_line() {
   local arg0=
   eval "function() { arg0=\$1; } $line" #${${(z)line}[1]}"
   
-  if (__rundir_is_command "$arg0"); then
+  if [ -n "$arg0" ] && (__rundir_is_command "$arg0"); then
    if [ -d "$arg0" ] && \
       (printf '%s' "$arg0" | grep -q -e '/') && \
       (__rundir_is_runnable_dir "$arg0"); then
