@@ -1,3 +1,5 @@
+# vim: set fdm=marker:
+# 
 # rundir ZSH integration
 # 
 # This ZLE widget makes it possible to invoke runnable directories from an
@@ -36,15 +38,20 @@ function rundir_process_line() {
   local arg0=
   eval "function() { arg0=\$1; } $line" #${${(z)line}[1]}"
   
-  if [ -d "$arg0" ] && (printf '%s' "$arg0" | grep -q -e '/') && \
-     (__rundir_is_runnable_dir "$arg0"); then
-   if (printf "$arg0" | grep -e '^-'); then
-    RBUFFER="rundir -- $RBUFFER"
-   else
-    RBUFFER="rundir $RBUFFER"
+  if (__rundir_is_command "$arg0"); then
+   if [ -d "$arg0" ] && \
+      (printf '%s' "$arg0" | grep -q -e '/') && \
+      (__rundir_is_runnable_dir "$arg0"); then
+    if (printf "$arg0" | grep -e '^-'); then
+     RBUFFER="rundir -- $RBUFFER"
+    else
+     RBUFFER="rundir $RBUFFER"
+    fi
+   #elif (rundir -w "$arg0" &>/dev/null); then
+   elif (__rundir_resolve_path "$arg0" &>/dev/null) &&
+        (__rundir_is_runnable_dir "$(__rundir_resolve_path "$arg0")"); then
+    RBUFFER="rundir -p $RBUFFER"
    fi
-  elif (rundir -w "$arg0" &>/dev/null); then
-   RBUFFER="rundir -p $RBUFFER"
   fi
  fi
  zle accept-line
@@ -53,9 +60,44 @@ zle -N rundir_process_line_widget rundir_process_line
 bindkey '^J' rundir_process_line_widget
 bindkey '^M' rundir_process_line_widget
 
+
+__rundir_is_command() {
+ if [ -z "$1" ]; then
+  echo "$0:is_command: first argument must be non-empty" >&2
+  return 127
+ fi
+ 
+ local arg=$1
+ shift
+ 
+ if (type -- "$arg" \
+     | grep -q -e 'is an\? \(shell \(builtin\|function\)\|alias\|reserved\)'); then
+  return 1
+ fi
+ 
+ return 0
+}
+
+
+__rundir_is_runnable() {
+ if [ -z "$1" ]; then
+  echo "$0:is_runnable: first argument must be the file or directory" >&2
+  return 127
+ fi
+ 
+ local file=$1
+ shift
+ 
+ [ ! -d "$file" ] && [ -x "$file" ] && return 0
+ __rundir_is_runnable_dir "$file" || return 1
+}
+
+
+# Runnable directory logic {{{1
+
 __rundir_is_runnable_dir() {
  if [ -z "$1" ]; then
-  echo "$SCRIPT:is_runnable_dir: first argument must be the directory" >&2
+  echo "$0:is_runnable_dir: first argument must be the directory" >&2
   return 127
  fi
  
@@ -67,4 +109,44 @@ __rundir_is_runnable_dir() {
  [ -f "$dir/run.mk" ] && return 0
  [ -x "$dir/AppRun" ] && return 0
  return 1
+}
+
+
+__rundir_resolve_path() {
+ # handle the case where the last path component is empty
+ if [ x"$1" = x"" ] || (printf '%s' "$1" | grep -q -e '/$'); then
+  return 1
+ fi
+ 
+ local dir=$(basename "/$1")
+ local all=$2
+ if [ x"$all" = x"" ] || [ x"$all" = x"0" ]; then
+  all=0
+ else
+  all=1
+ fi
+ 
+ local r=127
+ 
+ #local search=$PATH:
+ #while [ -n "$search" ]; do
+ # local i=${search%%:*}
+ # local search=${search#*:}
+ local oldifs=$IFS
+ IFS=:
+ local i
+ for i in ${=PATH}; do
+  if __rundir_is_runnable "$i/$dir"; then
+   echo "$i/$dir"
+   r=0
+   if [ $all -eq 0 ]; then
+    break
+   fi
+  fi
+ done
+ IFS=$oldifs
+ if [ $r -eq 127 ]; then
+  r=1
+ fi
+ return $r
 }
