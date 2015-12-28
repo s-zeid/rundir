@@ -28,11 +28,13 @@ function rundir_process_line() {
   zle vi-first-non-blank
   # get first argument from buffer in a (hopefully) safe manner
   # parameter and arithmetic expansion are done but not command substitution
-  local line="${(q)RBUFFER}"
+  local line=" ${(q)RBUFFER}"
 : 'quotes';                line=${line//\\\"/\"}; line=${line//\\\'/\'}
 : 'whitespace';            line=${line//\\ / }; line=${line//\\	/	}
 : 'variables';             line=${line//\\\$/\$}
-: 'parameter expansion';   line=${line//\$\\\{/\$\{}; line=${line//\\\}/\}}
+: 'parameter expansion'
+   line=${line//\$\\\{/\$\{}; line=${line//\\\}/\}}
+   line=$(printf '%s' "$line" | sed -e 's/\([^$]{[^}]*\)}/\1\\}/g')
 : 'arithmetic expansion';  line=${line//\$\\\(\\\(/\$\(\(}; line=${line//\\\)\\\)/\)\)}
 : 'escape $() expansions'; line=${line//\$\\\(/\\\$\\\(}
   local arg0=
