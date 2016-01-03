@@ -16,7 +16,7 @@
 # will be performed on the directory's name.  The history entry for the line
 # will show the actual rundir command used to run the directory.
 # 
-# Copyright (c) 2015 Scott Zeid.
+# Copyright (c) 2015-2016 Scott Zeid.
 # https://code.s.zeid.me/rundir
 # 
 # Released under the X11 License:  <https://tldrlegal.com/license/x11-license>
@@ -28,9 +28,9 @@ function rundir_process_line() {
   zle vi-first-non-blank
   # get first argument from buffer in a (hopefully) safe manner
   # parameter and arithmetic expansion are done but not command substitution
-  local line=" ${(q)RBUFFER}"
+  local line="${(q)RBUFFER}"
+  line=" $line"
 : 'quotes';                line=${line//\\\"/\"}; line=${line//\\\'/\'}
-: 'whitespace';            line=${line//\\ / }; line=${line//\\	/	}
 : 'variables';             line=${line//\\\$/\$}
 : 'parameter expansion'
    line=${line//\$\\\{/\$\{}; line=${line//\\\}/\}}
@@ -39,6 +39,7 @@ function rundir_process_line() {
 : 'escape $() expansions'; line=${line//\$\\\(/\\\$\\\(}
   local arg0=
   eval "function() { arg0=\$1; } $line" #${${(z)line}[1]}"
+: 'whitespace';            arg0=${arg0//\\ / }; arg0=${arg0//\\	/	}
   
   if [ -n "$arg0" ] && (__rundir_is_command "$arg0"); then
    if [ -d "$arg0" ] && \
