@@ -28,8 +28,8 @@ function rundir_process_line() {
   zle vi-first-non-blank
   # get first argument from buffer in a (hopefully) safe manner
   # parameter and arithmetic expansion are done but not command substitution
-  local line="${(q)RBUFFER}"
-  line=" $line #"
+  local line=" $RBUFFER #"
+  line="${${(z)line}[1]}"
 : 'quotes';                line=${line//\\\"/\"}; line=${line//\\\'/\'}
 : 'variables';             line=${line//\\\$/\$}
 : 'parameter expansion'
@@ -38,7 +38,7 @@ function rundir_process_line() {
 : 'arithmetic expansion';  line=${line//\$\\\(\\\(/\$\(\(}; line=${line//\\\)\\\)/\)\)}
 : 'escape $() expansions'; line=${line//\$\\\(/\\\$\\\(}
   local arg0=
-  eval "function() { arg0=\$1; } $line" #${${(z)line}[1]}"
+  eval "function() { arg0=\$1; } $line"
 : 'whitespace';            arg0=${arg0//\\ / }; arg0=${arg0//\\	/	}
   
   if [ -n "$arg0" ] && (__rundir_is_command "$arg0"); then
