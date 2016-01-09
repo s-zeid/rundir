@@ -29,7 +29,7 @@ function rundir_process_line() {
   # get first argument from buffer in a (hopefully) safe manner
   # parameter and arithmetic expansion are done but not command substitution
   local line=" $RBUFFER #"
-  line="${${(z)line}[1]}"
+  line="${(q)${(z)line}[1]}"
 : 'quotes';                line=${line//\\\"/\"}; line=${line//\\\'/\'}
 : 'variables';             line=${line//\\\$/\$}
 : 'parameter expansion'
