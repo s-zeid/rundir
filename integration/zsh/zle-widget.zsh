@@ -39,7 +39,7 @@ function rundir_process_line() {
 : 'escape $() expansions'; line=${line//\$\\\(/\\\$\\\(}
 : 'unescape leading ~s';   line=$(printf '%s' "$line" | sed -e 's/^\\~/~/')
   local arg0=
-  eval "function() { arg0=\$1; } $line"
+  arg0=$(eval "__rundir_first_arg $line")
 : 'whitespace';            arg0=${arg0//\\ / }; arg0=${arg0//\\	/	}
   
   if [ -n "$arg0" ] && (__rundir_is_command "$arg0"); then
@@ -63,6 +63,11 @@ function rundir_process_line() {
 zle -N rundir_process_line_widget rundir_process_line
 bindkey '^J' rundir_process_line_widget
 bindkey '^M' rundir_process_line_widget
+
+
+__rundir_first_arg() {
+ printf '%s' "$1"
+}
 
 
 __rundir_is_command() {
