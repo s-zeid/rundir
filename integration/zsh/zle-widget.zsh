@@ -37,6 +37,7 @@ function rundir_process_line() {
    line=$(printf '%s' "$line" | sed -e 's/\([^$]{[^}]*\)}/\1\\}/g')
 : 'arithmetic expansion';  line=${line//\$\\\(\\\(/\$\(\(}; line=${line//\\\)\\\)/\)\)}
 : 'escape $() expansions'; line=${line//\$\\\(/\\\$\\\(}
+: 'unescape leading ~s';   line=$(printf '%s' "$line" | sed -e 's/^\\~/~/')
   local arg0=
   eval "function() { arg0=\$1; } $line"
 : 'whitespace';            arg0=${arg0//\\ / }; arg0=${arg0//\\	/	}
