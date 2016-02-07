@@ -14,7 +14,7 @@ printf  '                      pwd: %s\n' "`pwd`" >&2
 
 if [ -d /proc ]; then
  gppid=`cat "/proc/$ppid/status" | grep '^PPid:' | grep -o '[0-9][0-9]\+'`
- printf '%s: %s\n' "grandparent process's pwd" "$(realpath "/proc/$gppid/cwd")" >&2
+ printf '%s: %s\n' "grandparent process's pwd" "$(readlink "/proc/$gppid/cwd")" >&2
 else
  printf '%s: %s\n' "grandparent process's pwd" "<not available>" >&2
 fi
