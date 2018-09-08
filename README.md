@@ -5,7 +5,7 @@ A [runnable directory](https://en.wikipedia.org/wiki/Application_directory)
 implementation that also allows for creating self-running archives of
 runnable directories.
 
-Copyright (c) 2014–2015 [Scott Zeid](https://s.zeid.me/).  
+Copyright (c) 2014–2018 [Scott Zeid](https://s.zeid.me/).  
 <https://code.s.zeid.me/rundir>
 
 Released under the X11 License:  <https://tldrlegal.com/license/x11-license>

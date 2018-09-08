@@ -7,7 +7,7 @@
 # implementation that also allows for creating self-running archives of
 # runnable directories.
 # 
-# Copyright (c) 2014-2015 Scott Zeid.
+# Copyright (c) 2014-2018 Scott Zeid.
 # https://code.s.zeid.me/rundir
 # 
 # Released under the X11 License:  <https://tldrlegal.com/license/x11-license>
