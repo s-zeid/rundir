@@ -75,7 +75,7 @@ usage() {
   echo "Usage: $SCRIPT <directory> [args [...]]"
   echo "       $SCRIPT -p|--search-path <directory-in-path> [args [...]]"
   echo "       $SCRIPT -w|--which [-a|--all] [--] <directory-name> [...]"
-  echo "       $SCRIPT --make-sfx <directory> <output-file>"
+  echo "       $SCRIPT --make-sfx [-r|--reproducible] <directory> <output-file>"
   echo "       $SCRIPT -h|--help"
  else
   echo "Usage: $SCRIPT [args [...]]"
@@ -322,8 +322,14 @@ resolve_path() {
 
 make_sfx() {
  if [ -z "$1" ] || [ -z "$2" ]; then
-  echo "Usage: $SCRIPT --make-sfx <directory> <output-file>"
+  echo "Usage: $SCRIPT --make-sfx [-r|--reproducible] <directory> <output-file>"
   return 2
+ fi
+ 
+ local reproducible=0
+ if [ x"$1" = x"--reproducible" ] || [ x"$1" = x"-r" ]; then
+  reproducible=1
+  shift 1
  fi
  
  local in_dir=$1
@@ -335,10 +341,28 @@ make_sfx() {
   return 2
  fi
  
+ local tar_gnu_args=
+ local tar_version=$(tar --version 2>/dev/null | head -n 1)
+ local tar_is_gnu="$(printf '%s' "$tar_version" | grep -q -e 'GNU' && echo 1 || echo 0)"
+ if [ $reproducible -ne 0 ]; then
+  if [ $tar_is_gnu -eq 0 ]; then
+   echo "$0: error: GNU tar is required for reproducible archives" >&2
+   exit 1
+  fi
+  
+  local epoch="$(printf '%s' "$SOURCE_DATE_EPOCH" | sed -e 's/[^0-9]//g')"
+  if [ x"$epoch" = x"" ]; then
+   epoch=0
+  fi
+  
+  tar_gnu_args="--sort=name --mtime=@$epoch --owner=0 --group=0 --numeric-owner"
+  tar_gnu_args="$tar_gnu_args --format=oldgnu"
+ fi
+ 
  cat "$0" \
   | sed -e 's/^IS_SFX=0$/IS_SFX=1/g' \
   > "$out_file"
- tar cz -C "$in_dir" . >> "$out_file"
+ tar cz -C "$in_dir" $tar_gnu_args . >> "$out_file"
  chmod +x "$out_file"
 }
 
