@@ -442,7 +442,7 @@ get_uid() {
   return 127
  fi
  
- local uid=$(ls -d -n "$file" | sed -e "s/\t/ /g" | cut -d ' ' -f 3)
+ local uid=$(ls -d -n "$file" | sed -e 's/\t/ /g; s/ \+/ /g' | cut -d ' ' -f 3)
  
  # The UID should be an integer; otherwise, we've failed
  echo "x$uid" | (grep '^x[0-9][0-9]*$' &>/dev/null)
