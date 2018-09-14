@@ -342,10 +342,8 @@ make_sfx() {
  fi
  
  local tar_gnu_args=
- local tar_version=$(tar --version 2>/dev/null | head -n 1)
- local tar_is_gnu="$(printf '%s' "$tar_version" | grep -q -e 'GNU' && echo 1 || echo 0)"
  if [ $reproducible -ne 0 ]; then
-  if [ $tar_is_gnu -eq 0 ]; then
+  if ! tar_is_gnu; then
    echo "$0: error: GNU tar is required for reproducible archives" >&2
    exit 1
   fi
@@ -430,7 +428,12 @@ sfx_extract() {
  
  local out=$1
  mkdir -p "$out"
- sfx_cat "$skip" | tar xz -C "$out"
+ 
+ if tar_is_gnu && (tar --warning=_ 2>&1 | grep -q -e 'timestamp'); then
+  sfx_cat "$skip" | tar xz -C "$out" --warning=no-timestamp
+ else
+  sfx_cat "$skip" | tar xz -C "$out"
+ fi
 }
 
 sfx_cat() {
@@ -476,6 +479,11 @@ get_uid() {
  fi
  
  printf '%s' "$uid"
+}
+
+tar_is_gnu() {
+ local tar_version=$(tar --version 2>/dev/null | head -n 1)
+ printf '%s' "$tar_version" | grep -q -e 'GNU'
 }
 
 #}}}
