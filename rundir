@@ -427,7 +427,11 @@ sfx_entry() {
  local ret=$?
  
  # Remove temporary files
- rm -r "$sfx_tmp"
+ if (printf '%s' "$sfx_tmp" | grep -q -e '/rundir-sfx-'); then
+  rm -rf "$sfx_tmp"
+ else
+  rm -r "$sfx_tmp"
+ fi
 
  return $ret
 }
