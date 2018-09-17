@@ -179,6 +179,23 @@ run_dir() {
  
  cd "$orig_wd"
  
+ if [ x"$run_name" = x"AppRun" ]; then
+  # export AppImage compatibility variables
+  if [ $IS_SFX -ne 0 ]; then
+   export APPIMAGE="$(abspath -r "$0")"
+  else
+   export APPIMAGE=
+  fi
+  
+  export APPDIR="$(abspath -r "$dir")"
+ fi
+ 
+ if [ $IS_SFX -ne 0 ]; then
+  export ARGV0="$0"
+ else
+  export ARGV0="$dir"
+ fi
+ 
  if [ $use_make -eq 0 ]; then
   ([ -n "$wd" ] && cd "$wd" || true;
    export PATH="$path"; exec "$run" "$@")
@@ -446,6 +463,21 @@ sfx_cat() {
 }
 
 # Utilities {{{1
+
+abspath() {
+ if [ x"$1" = x"-r" ] || [ x"$1" = x"--resolve" ]; then
+  shift
+  if which readlink 2>&1 >/dev/null; then
+   readlink -m "$1"
+   return
+  fi
+ elif [ x"$1" = x"--" ]; then
+  shift
+ fi
+ 
+ printf '%s\n' \
+  "$(cd "$(dirname -- "$1")"; printf '%s' "$(pwd)")/$(basename -- "$1")"
+}
 
 # This (obviously) gets the user ID of the given file/directory's owner.
 # For symlinks, it looks at the owner of the symlink itself.
